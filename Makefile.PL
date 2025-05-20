@@ -44,14 +44,13 @@ WriteMakefile(
         'Template::Constants'          => 0,
         'Test::More'                   => 0,
         'Test'                         => 0,
-        'Text::Markdown'               => 0,
-        'Text::MultiMarkdown'          => 0,
+        'CommonMark'                   => 0,
         'Unicode::Normalize'           => 0,
         'YAML::PP'                     => 0,
     },
     'META_MERGE' => {
         'resources' => {
-            'repository' => 'https://github.com/markdbenson/dapper',
+            'repository' => 'https://github.com/taboege/dapper',
         },
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },

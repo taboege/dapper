@@ -1,5 +1,8 @@
 Revision history for App-Dapper
 
+0.22    2025-05-20
+        Use CommonMark instead of Text::MultiMarkdown
+
 0.21    2025-01-22
         Added CGI to list of module dependencies.
 

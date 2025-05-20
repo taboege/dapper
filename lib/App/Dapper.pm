@@ -21,10 +21,11 @@ use IO::Dir;
 use Template::Alloy;
 use Template::Constants qw( :debug );
 
-use Text::MultiMarkdown 'markdown';
+use CommonMark qw(:opt);
 
 use Net::HTTPServer;
 
+use YAML::PP::Common qw/ :PRESERVE /;
 use YAML::PP qw/ Load Dump LoadFile DumpFile /;
 use File::Spec::Functions qw/ canonpath /;
 use File::Path qw(make_path);
@@ -47,11 +48,11 @@ my $ID = 0;
 
 =head1 VERSION
 
-Version 0.21
+Version 0.22
 
 =cut
 
-our $VERSION = '0.21';
+our $VERSION = '0.22';
 
 our @EXPORT = qw($VERSION);
 
@@ -495,7 +496,7 @@ sub serve {
 sub read_project {
     my ($self) = @_;
 
-    my $config = LoadFile($self->{config}) or die "error: could not load \"$self->{config}\": $!\n";
+    my $config = LoadFile($self->{config}, preserve => PRESERVE_ORDER) or die "error: could not load \"$self->{config}\": $!\n";
 
     # Graft together
     @{$self->{site}}{keys %{$config}} = values %$config;
@@ -673,7 +674,7 @@ sub build_inventory {
     $page{dirname} = $dirname;
 
     if ($page{source_file_extension} eq ".md") { 
-        $page{content} = markdown($page{content});
+        $page{content} = CommonMark->markdown_to_html($page{content}, OPT_SMART | OPT_UNSAFE);
 
         # Save first paragraph of content as excerpt
         $page{content} =~ /(<p>.*?<\/p>)/s;
